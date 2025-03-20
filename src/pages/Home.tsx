@@ -1,7 +1,11 @@
+import { Button } from "@/components/ui/button.tsx"
+
 export const Home = () => {
   return (
     <>
-      <h1>Home</h1>
+      <h1>
+        <Button>123</Button>
+      </h1>
     </>
   )
 }
