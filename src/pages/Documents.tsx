@@ -16,6 +16,7 @@ import {
   rectSortingStrategy,  // Change this import
 } from '@dnd-kit/sortable'
 import { DocumentFilter } from '@/components/ui/document-filter'
+import { DocumentStatistics } from '@/components/ui/document-statistics'
 
 interface DocStatistics {
   searchCount: number
@@ -325,6 +326,11 @@ export function Documents() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">知识库文档</h1>
         <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
+      </div>
+
+      {/* 添加统计图表 */}
+      <div className="mb-8">
+        <DocumentStatistics documents={documents} />
       </div>
 
       <div className="mb-6">
