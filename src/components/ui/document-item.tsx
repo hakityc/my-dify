@@ -2,6 +2,8 @@ import { FileText, Image, FileArchive, GripVertical } from "lucide-react"
 import { formatFileSize } from "@/lib/utils"
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { useState } from 'react'
+import { DocumentPreview } from './document-preview'
 
 interface DocStatistics {
   searchCount: number
@@ -53,6 +55,7 @@ const getDocIcon = (docType: string) => {
 }
 
 export function DocumentItem({ doc, viewMode }: DocumentItemProps) {
+  const [showPreview, setShowPreview] = useState(false)
   const {
     attributes,
     listeners,
@@ -116,47 +119,56 @@ export function DocumentItem({ doc, viewMode }: DocumentItemProps) {
   switch (viewMode) {
     case 'list':
       return (
-        <div
-          ref={setNodeRef}
-          style={style}
-          className="group flex items-center justify-between p-4 hover:bg-gray-50 border-b"
-          onClick={() => onSelect?.(doc.docId)}
-        >
-          <div className="flex-1 min-w-0 space-y-1">{baseContent}</div>
-        </div>
+        <>
+          <div
+            ref={setNodeRef}
+            style={style}
+            className="group flex items-center justify-between p-4 hover:bg-gray-50 border-b cursor-pointer"
+            onClick={() => setShowPreview(true)}
+          >
+            <div className="flex-1 min-w-0 space-y-1">{baseContent}</div>
+          </div>
+
+          <DocumentPreview
+            isOpen={showPreview}
+            onClose={() => setShowPreview(false)}
+            doc={doc}
+          />
+        </>
       )
 
     case 'grid':
       return (
-        <div
-          ref={setNodeRef}
-          style={style}
-          className="group p-4 border rounded-lg hover:shadow-md transition-shadow space-y-2"
-          onClick={() => onSelect?.(doc.docId)}
-        >
-          {doc.previewUrl && (
-            <div className="aspect-video rounded-md overflow-hidden bg-gray-100">
-              <img
-                src={doc.previewUrl}
-                alt={doc.docName}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-          <div className="space-y-2">{baseContent}</div>
-        </div>
+        <>
+          <div
+            ref={setNodeRef}
+            style={style}
+            className="group p-4 border rounded-lg hover:shadow-md transition-shadow space-y-2 cursor-pointer"
+            onClick={() => setShowPreview(true)}
+          >
+            {doc.previewUrl && (
+              <div className="aspect-video rounded-md overflow-hidden bg-gray-100">
+                <img
+                  src={doc.previewUrl}
+                  alt={doc.docName}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="space-y-2">{baseContent}</div>
+          </div>
+        </>
       )
 
     case 'card':
       return (
-        <div
-          ref={setNodeRef}
-          style={style}
-          className="group p-6 border rounded-lg hover:shadow-lg transition-shadow space-y-3"
-          onClick={() => onSelect?.(doc.docId)}
-        >
-          <div className="flex items-start justify-between">
-            <div className="space-y-3 flex-1">{baseContent}</div>
+        <>
+          <div
+            ref={setNodeRef}
+            style={style}
+            className="group p-6 border rounded-lg hover:shadow-lg transition-shadow space-y-3 cursor-pointer"
+            onClick={() => setShowPreview(true)}
+          >
             {doc.previewUrl && (
               <div className="w-24 h-24 rounded-md overflow-hidden bg-gray-100 ml-4">
                 <img
@@ -166,8 +178,11 @@ export function DocumentItem({ doc, viewMode }: DocumentItemProps) {
                 />
               </div>
             )}
+            <div className="space-y-2">{baseContent}</div>
           </div>
-        </div>
+        </>
       )
   }
 }
+
+// 删除重复声明的 DocumentItem
