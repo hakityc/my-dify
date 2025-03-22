@@ -274,6 +274,19 @@ export function Documents() {
     setFilteredDocs(filtered)
   }
 
+  // 定义过滤选项接口
+  interface FilterOptions {
+    docType?: string[];
+    sizeRange?: {
+      min?: number;
+      max?: number;
+    };
+    dateRange?: {
+      start?: string;
+      end?: string;
+    };
+  }
+
   const handleFilter = (options: FilterOptions) => {
     let filtered = [...documents]
 

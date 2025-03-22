@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Search, Filter, X } from 'lucide-react'
 import { Button } from './button'
 import { Input } from './input'
-import { formatFileSize } from '@/lib/utils'
+// 删除未使用的导入
+// import { formatFileSize } from '@/lib/utils'
 
 interface FilterOptions {
   docType?: string[]

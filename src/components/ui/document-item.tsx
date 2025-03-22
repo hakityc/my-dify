@@ -27,6 +27,8 @@ interface DocItem {
 interface DocumentItemProps {
   doc: DocItem
   viewMode: 'list' | 'grid' | 'card'
+  selected?: boolean
+  onSelect?: (docId: string) => void
 }
 
 const getStatusColor = (status: DocItem['status']) => {
@@ -81,10 +83,10 @@ export function DocumentItem({ doc, viewMode }: DocumentItemProps) {
     </div>
   )
 
-  const onSelect = (docId: string) => {
-    console.log('Selecting document:', docId)
-    return 
-  }
+  // const onSelect = (docId: string) => {
+  //   console.log('Selecting document:', docId)
+  //   return 
+  // }
   
   const baseContent = (
     <>
