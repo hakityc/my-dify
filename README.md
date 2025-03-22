@@ -5,16 +5,19 @@
 ## 功能特点
 
 - 📄 多格式文档支持
+
   - PDF 文件预览
   - Word/Excel 文档预览
   - 图片预览
 
 - 📱 响应式布局
+
   - 列表视图
   - 网格视图
   - 卡片视图
 
 - 🎯 智能管理
+
   - 文档分组
   - 标签管理
   - 拖拽排序
@@ -28,27 +31,28 @@
 ## 快速开始
 
 1. 克隆项目
+
 ```bash
-git clone <repository-url>
+git clone git@github.com:hakityc/my-dify.git
 cd my-dify
-````
+```
 
 2. 安装依赖
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. 启动开发服务器
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 4. 构建生产版本
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## 技术栈
