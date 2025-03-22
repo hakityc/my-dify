@@ -323,7 +323,7 @@ export function Documents() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">文档</h1>
+        <h1 className="text-2xl font-semibold">知识库文档</h1>
         <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
       </div>
 
@@ -374,8 +374,8 @@ export function Documents() {
                 <div className={`
                   gap-4
                   ${viewMode === 'list' ? 'flex flex-col' : ''}
-                  ${viewMode === 'grid' ? 'grid grid-cols-4' : ''}
-                  ${viewMode === 'card' ? 'grid grid-cols-2' : ''}
+                  ${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : ''}
+                  ${viewMode === 'card' ? 'grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2' : ''}
                 `}>
                   {docs.map((doc) => (
                     <DocumentItem

@@ -12,7 +12,7 @@ export function ViewToggle({ currentView, onViewChange }: ViewToggleProps) {
   return (
     <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg">
       <Button
-        className="cursor-pointer"
+        className={`cursor-pointer ${currentView === 'list' ? 'bg-[#155aef]!' : ''}`}
         variant={currentView === 'list' ? 'default' : 'ghost'}
         size="icon"
         onClick={() => onViewChange('list')}
@@ -20,7 +20,7 @@ export function ViewToggle({ currentView, onViewChange }: ViewToggleProps) {
         <List className="h-4 w-4" />
       </Button>
       <Button
-        className="cursor-pointer"
+        className={`cursor-pointer ${currentView === 'grid' ? 'bg-[#155aef]!' : ''}`}
         variant={currentView === 'grid' ? 'default' : 'ghost'}
         size="icon"
         onClick={() => onViewChange('grid')}
@@ -28,7 +28,7 @@ export function ViewToggle({ currentView, onViewChange }: ViewToggleProps) {
         <LayoutGrid className="h-4 w-4" />
       </Button>
       <Button
-        className="cursor-pointer"
+        className={`cursor-pointer ${currentView === 'card' ? 'bg-[#155aef]!' : ''}`}
         variant={currentView === 'card' ? 'default' : 'ghost'}
         size="icon"
         onClick={() => onViewChange('card')}
