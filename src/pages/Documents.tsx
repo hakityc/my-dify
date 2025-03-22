@@ -209,15 +209,22 @@ export function Documents() {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     if (!over) return
-
-    const activeDoc = documents.find(doc => doc.docId === active.id)
-    const overDoc = documents.find(doc => doc.docId === over.id)
+  
+    const activeDoc = filteredDocs.find(doc => doc.docId === active.id)
+    const overDoc = filteredDocs.find(doc => doc.docId === over.id)
     
     if (activeDoc && overDoc && activeDoc.group === overDoc.group) {
       const oldIndex = documents.findIndex(doc => doc.docId === active.id)
       const newIndex = documents.findIndex(doc => doc.docId === over.id)
       
-      setDocuments(arrayMove(documents, oldIndex, newIndex))
+      const newDocuments = arrayMove(documents, oldIndex, newIndex)
+      setDocuments(newDocuments)
+      // 同步更新 filteredDocs
+      setFilteredDocs(prev => {
+        const oldFilteredIndex = prev.findIndex(doc => doc.docId === active.id)
+        const newFilteredIndex = prev.findIndex(doc => doc.docId === over.id)
+        return arrayMove(prev, oldFilteredIndex, newFilteredIndex)
+      })
     }
   }
 
