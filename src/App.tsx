@@ -1,10 +1,9 @@
-import { Home } from './pages/Home'
+import { Documents } from '@/pages/Documents'
 
 function App() {
-
   return (
     <>
-    <Home></Home>
+      <Documents />
     </>
   )
 }
