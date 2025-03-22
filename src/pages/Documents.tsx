@@ -15,6 +15,7 @@ import {
   verticalListSortingStrategy,
   rectSortingStrategy,  // Change this import
 } from '@dnd-kit/sortable'
+import { DocumentFilter } from '@/components/ui/document-filter'
 
 interface DocStatistics {
   searchCount: number
@@ -188,9 +189,10 @@ export function Documents() {
   const [viewMode, setViewMode] = useState<ViewMode>('list')
   const [documents, setDocuments] = useState(mockDocuments)
   const [selectedDocs, setSelectedDocs] = useState<string[]>([])
+  const [filteredDocs, setFilteredDocs] = useState(documents)
 
-  // Move groupedDocs computation here
-  const groupedDocs = documents.reduce((groups, doc) => {
+  // 使用 filteredDocs 计算分组
+  const groupedDocs = filteredDocs.reduce((groups, doc) => {
     const group = groups[doc.group || '未分组'] || []
     group.push(doc)
     return { ...groups, [doc.group || '未分组']: group }
@@ -248,32 +250,105 @@ export function Documents() {
     setSelectedDocs([])
   }
 
+  // 删除这里重复声明的 filteredDocs
+  // const [filteredDocs, setFilteredDocs] = useState(documents)
+
+  const handleSearch = (keyword: string) => {
+    if (!keyword) {
+      setFilteredDocs(documents)
+      return
+    }
+    
+    const filtered = documents.filter(doc => 
+      doc.docName.toLowerCase().includes(keyword.toLowerCase()) ||
+      doc.tag?.toLowerCase().includes(keyword.toLowerCase())
+    )
+    setFilteredDocs(filtered)
+  }
+
+  const handleFilter = (options: FilterOptions) => {
+    let filtered = [...documents]
+
+    if (options.docType?.length) {
+      filtered = filtered.filter(doc => 
+        options.docType?.includes(doc.docType)
+      )
+    }
+
+    if (options.sizeRange) {
+      filtered = filtered.filter(doc => {
+        const { min, max } = options.sizeRange!
+        if (min && max) {
+          return doc.docSize >= min && doc.docSize <= max
+        }
+        if (min) {
+          return doc.docSize >= min
+        }
+        if (max) {
+          return doc.docSize <= max
+        }
+        return true
+      })
+    }
+
+    if (options.dateRange?.start || options.dateRange?.end) {
+      filtered = filtered.filter(doc => {
+        const docDate = new Date(doc.uploadTime)
+        const start = options.dateRange?.start ? new Date(options.dateRange.start) : null
+        const end = options.dateRange?.end ? new Date(options.dateRange.end) : null
+
+        if (start && end) {
+          return docDate >= start && docDate <= end
+        }
+        if (start) {
+          return docDate >= start
+        }
+        if (end) {
+          return docDate <= end
+        }
+        return true
+      })
+    }
+
+    setFilteredDocs(filtered)
+  }
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">文档</h1>
-        <div className="flex items-center gap-4">
-          {selectedDocs.length > 0 && (
-            <div className="flex items-center gap-2">
-              <select 
-                className="border rounded px-2 py-1"
-                onChange={(e) => handleBatchMove(e.target.value)}
-              >
-                <option value="">移动到...</option>
-                {Object.keys(groupedDocs).map(group => (
-                  <option key={group} value={group}>{group}</option>
-                ))}
-              </select>
-              <button
-                className="text-red-500 hover:text-red-600"
-                onClick={handleBatchDelete}
-              >
-                删除
-              </button>
-            </div>
-          )}
-          <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
-        </div>
+        <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
+      </div>
+
+      <div className="mb-6">
+        <DocumentFilter
+          onSearch={handleSearch}
+          onFilter={handleFilter}
+        />
+      </div>
+
+      <div className="flex items-center gap-4">
+        {selectedDocs.length > 0 && (
+          <div className="flex items-center gap-2">
+            <select 
+              className="border rounded px-2 py-1"
+              onChange={(e) => handleBatchMove(e.target.value)}
+            >
+              <option value="">移动到...</option>
+              {Object.keys(groupedDocs).map(group => (
+                <option key={group} value={group}>{group}</option>
+              ))}
+            </select>
+            <button
+              className="text-red-500 hover:text-red-600"
+              onClick={handleBatchDelete}
+            >
+              删除
+            </button>
+          </div>
+        )}
+        
+
       </div>
 
       <DndContext
@@ -310,6 +385,7 @@ export function Documents() {
           ))}
         </div>
       </DndContext>
+
     </div>
   )
 }

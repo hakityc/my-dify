@@ -77,6 +77,11 @@ export function DocumentItem({ doc, viewMode }: DocumentItemProps) {
       <GripVertical className="h-5 w-5 text-gray-400" />
     </div>
   )
+
+  const onSelect = (docId: string) => {
+    console.log('Selecting document:', docId)
+    return 
+  }
   
   const baseContent = (
     <>
@@ -90,7 +95,7 @@ export function DocumentItem({ doc, viewMode }: DocumentItemProps) {
           </span>
         )}
       </div>
-      <div className={`text-xs px-2 py-0.5 rounded-full w-14 ${statusClass}`}>
+      <div className={`text-xs px-2 py-0.5 rounded-full w-16 flex justify-center ${statusClass}`}>
         {doc.status}
       </div>
       <div className="text-sm text-gray-500">
